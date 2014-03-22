@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="ChatApp">
+    <head>
+        <title>Chat</title>
+
+        <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+
+        <script>
+            global.gui = require('nw.gui');
+
+            // load debugger on ctrl+shift+j
+            document.addEventListener('keypress', function (e) {
+                if (e.shiftKey && e.ctrlKey && e.keyCode === 10) {
+                    global.gui.Window.get().showDevTools()
+                }
+            });
+        </script>
+
+    </head>
+    <body>
+        <div class="main-container" ng-controller="RosterController">
+            <div class="roster-container">
+                <div class="group">
+                    <div class="group-header">Threads</div>
+                    <div ng-repeat="thread in threadMap">
+                        <div user="thread.user" ng-click="userClicked(thread.user)"></div>
+                    </div>
+                </div>
+                <div class="group" ng-repeat="group in groups | orderBy:'name'">
+                    <div class="group-header">{{group.name}}</div>
+                    <div user="user" ng-click="userClicked(user)" ng-hide="user.state=='offline'" ng-repeat="user in group.users | orderBy:'name'"></div>
+                </div>
+            </div>
+            <div class="messages-container" ng-controller="MessagesController">
+                <div ng-show="selectedThread">
+                    <div class="chat-header">
+                        <div class="user {{selectedThread.user.state}}">
+                            <span class="state-icon" title="{{selectedThread.user.state}}"></span>
+                            <span class="name">{{selectedThread.user.name || selectedThread.user.jid}}</span>
+                            <span class="status-text">
+                                {{selectedThread.user.statusText}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="messages-list">
+                        <div class="chat-message" ng-repeat="message in selectedThread.messages">
+                            <div class="chat-message-text">{{message.text}}</div>
+                            <div class="chat-message-timestamp">{{message.timestamp | date:'shortTime'}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-ui/build/angular-ui.js"></script>
+        <script src="js/directives/user.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/rosterController.js"></script>
+        <script src="js/messagesController.js"></script>
+
+    </body>
+</html>

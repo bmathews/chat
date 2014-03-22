@@ -1,0 +1,15 @@
+{
+  "name": "mail",
+  "version": "0.1.0",
+  "main": "ui/index.html",
+  "window": {
+    "toolbar": true,
+    "frame": true,
+    "width": 600,
+    "height": 400
+  },
+  "dependencies": {
+    "simple-xmpp": "0.1.12",
+    "lodash": "^2.4.1"
+  }
+}

@@ -1,0 +1,118 @@
+.main-container {
+    height: 100%;
+    display: -webkit-flex;
+    display:         flex;
+    -webkit-flex-flow: row;
+            flex-flow: row;
+}
+
+html, body {
+    height: 100%;
+    font-size: 12px;
+    font-family: 'Open Sans';
+}
+
+.roster-container, .messages-container {
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.roster-container .group-header {
+    font-weight: 700;
+    color: #999;
+    padding: 4px 10px;
+}
+
+.roster-container {
+    -webkit-flex: 1 1 40%;
+            flex: 1 6 40%;
+    -webkit-order: 1;
+            order: 1;
+    border-right: 1px solid #ddd;
+    background: #fff;
+}
+
+.roster-container .user {
+    padding: 6px 4px 6px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-top: -1px;
+    cursor: pointer;
+}
+
+.roster-container .user:hover {
+    background: #f0f0f0;
+}
+
+.roster-container .user .name,
+.messages-container .user .name {
+    font-weight: 700;
+    color: #444;
+}
+
+.roster-container .user .status-text {
+    margin-left: 5px;
+}
+
+.user .state-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.user.online .state-icon {
+    background-color: rgb(36,156,78);
+}
+
+.user.away .state-icon,
+.user.offline .state-icon {
+    background-color: #ccc;
+}
+
+.user.xa .state-icon {
+    background-color: #ddd;
+}
+
+.user.dnd .state-icon {
+    background-color: #e93d44;  
+}
+
+.messages-container .chat-header {
+    padding: 10px;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+}
+
+.messages-container .messages-list {
+    padding: 10px;
+}
+
+.messages-container .chat-message {
+    padding: 10px;
+    background: #fff;
+    margin-bottom: 10px;
+    float: left;
+    clear: both;
+    box-shadow: 0px 1px 2px rgba(0,0,0,.2);
+}
+
+.messages-container .chat-message-timestamp {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.messages-container {
+    -webkit-flex: 1 1 60%;
+            flex: 1 1 60%;
+    -webkit-order: 2;
+            order: 2;
+    background: #f1f1f1;
+    border-right: 1px solid #eee;
+}
