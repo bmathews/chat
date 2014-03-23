@@ -1,5 +1,5 @@
 'use strict';
-angular.module('ChatApp', ['directives.user'])
+angular.module('ChatApp', ['directives.user', 'luegg.directives'])
     .run(['$rootScope', function ($rootScope) {
 
         var xmpp = require('simple-xmpp'),

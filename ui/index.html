@@ -25,10 +25,11 @@
         <div class="main-container" >
             <div class="roster-container" ng-controller="RosterController">
                 <div class="threads group">
-                    <div class="group-header">Threads</div>
+                    <div class="group-header">Conversations</div>
                     <div class="thread"  ng-repeat="thread in threadMap">
                         <div user="thread.user" ng-click="userClicked(thread.user)"></div>
                         <span class="close-thread glyphicon glyphicon-remove" ng-click="closeThread(thread)"></span>
+                        <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-left: 31px; color: #666;">{{thread.messages[thread.messages.length-1].text.substr(0, 100)}}</div>
                     </div>
                 </div>
                 <div class="group" ng-repeat="group in groups | orderBy:'name'">
@@ -39,15 +40,20 @@
                 </div>
             </div>
             <div class="messages-container" ng-controller="MessagesController">
-                <div ng-show="selectedThread">
+                <div class="selected-thread" ng-show="selectedThread">
                     <div class="chat-header">
                         <div class="pull-left" user="selectedThread.user"></div>
                         <div class="pull-right">{{selectedThread.user.chatState}}</div>
                     </div>
-                    <div class="messages-list">
+                    <div scroll-glue class="messages-list">
                         <div class="chat-message" ng-repeat="message in selectedThread.messages">
                             <div class="chat-message-text">{{message.text}}</div>
                             <div class="chat-message-timestamp">{{message.timestamp | date:'shortTime'}}</div>
+                        </div>
+                    </div>
+                    <div class="composition-bar">
+                        <div class="input-field">
+                            <textarea rows="1" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
@@ -56,6 +62,7 @@
 
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/angular-ui/build/angular-ui.js"></script>
+        <script src="bower_components/angularjs-scroll-glue/src/scrollglue.js"></script>
         <script src="js/directives/user.js"></script>
         <script src="js/app.js"></script>
         <script src="js/rosterController.js"></script>
