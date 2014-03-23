@@ -21,8 +21,51 @@ html, body {
 
 .roster-container .group-header {
     font-weight: 700;
-    color: #999;
+    color: #666;
     padding: 4px 10px;
+    cursor: pointer;
+}
+.roster-container .group-header:hover {
+    color: #999;
+}
+
+.roster-container .thread {
+    position: relative;
+}
+
+.roster-container .thread:hover .user .state-icon {
+    visibility: hidden;
+}
+
+.roster-container .threads {
+    border-bottom: 1px solid #333;
+    margin-bottom: 6px;
+}
+
+.roster-container .thread .close-thread {
+    position: absolute;
+    top: 50%;
+    margin-top: -16px;
+    left: 1px;
+    color: transparent;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.roster-container .thread:hover .close-thread {
+    color: #555;   
+}
+
+.roster-container .thread .close-thread:hover {
+    color: #fff;
+}
+
+.roster-container .group-toggle {
+    float: right;
+    display: inline-block;
+    border-top-color: #666;
+    position: relative;
+    top: 7px;
 }
 
 .roster-container {
@@ -30,8 +73,7 @@ html, body {
             flex: 1 6 40%;
     -webkit-order: 1;
             order: 1;
-    border-right: 1px solid #ddd;
-    background: #fff;
+    background: #33393d;
 }
 
 .roster-container .user {
@@ -39,45 +81,59 @@ html, body {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    border-top: 1px solid #eee;
+    width: 100%;
+    /*border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
-    margin-top: -1px;
+    margin-top: -1px;*/
     cursor: pointer;
+    color: #aaa;
 }
 
-.roster-container .user:hover {
-    background: #f0f0f0;
+.roster-container .user:hover .name {
+    color: #fff;
 }
 
 .roster-container .user .name,
 .messages-container .user .name {
     font-weight: 700;
-    color: #444;
+    color: #aaa;
 }
 
-.roster-container .user .status-text {
+.user .status-text {
     margin-left: 5px;
 }
+
 
 .user .state-icon {
     display: inline-block;
     width: 10px;
     height: 10px;
     border-radius: 50%;
+    border: 2px solid #333;
     margin-right: 8px;
 }
 
 .user.online .state-icon {
-    background-color: rgb(36,156,78);
+    border-color: rgb(36,156,78);
 }
 
 .user.away .state-icon,
 .user.offline .state-icon {
-    background-color: #ccc;
+    border-color: #ccc;
 }
 
 .user.xa .state-icon {
-    background-color: #ddd;
+    border-color: #ddd;
+}
+
+.user.composing .state-icon {
+    -webkit-animation: pulsate .75s ease-in-out;
+    -webkit-animation-iteration-count: infinite; 
+    -webkit-animation-direction: alternate;
+}
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(1, 1); opacity: 1.0;}
+    100% {-webkit-transform: scale(0.8, 0.8); opacity: .8;}
 }
 
 .user.dnd .state-icon {
@@ -86,8 +142,10 @@ html, body {
 
 .messages-container .chat-header {
     padding: 10px;
-    background: #eee;
-    border-bottom: 1px solid #ddd;
+    background: #0072c6;
+    border-bottom: 2px solid #0161a8;
+    display: inline-block;
+    width: 100%;
 }
 
 .messages-container .messages-list {
@@ -103,6 +161,10 @@ html, body {
     box-shadow: 0px 1px 2px rgba(0,0,0,.2);
 }
 
+.messages-container .chat-message-text {
+    margin-bottom: 5px;
+}
+
 .messages-container .chat-message-timestamp {
     font-size: 11px;
     color: #aaa;
@@ -113,6 +175,4 @@ html, body {
             flex: 1 1 60%;
     -webkit-order: 2;
             order: 2;
-    background: #f1f1f1;
-    border-right: 1px solid #eee;
 }

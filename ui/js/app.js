@@ -5,8 +5,8 @@ angular.module('ChatApp', ['directives.user'])
         var xmpp = require('simple-xmpp'),
             _ = require('lodash');
 
-        $rootScope.rosterMap = {};
-        $rootScope.threadMap = {}
+        window.rosterMap = $rootScope.rosterMap = {};
+        $rootScope.threadMap = {};
         $rootScope.groups = [];
         $rootScope.online = false;
 
@@ -65,14 +65,22 @@ angular.module('ChatApp', ['directives.user'])
                     parseRosterStanza(stanza);
                 } else if (stanza.is('presence')) {
                     // this calls .on('buddy')
+                } else if (stanza.is('message')) {
+                    if (stanza.attrs.type == 'chat') {
+                        var chatState = stanza.getChildByAttr('xmlns:cha', 'http://jabber.org/protocol/chatstates');
+                        if (chatState) {
+                            parseChatStateStanza(stanza.attrs.from, chatState.name);
+                        }
+                    }
                 } else {
                     console.log("Unknown Stanza: " + stanza);
                 }
             });
         });
 
-        xmpp.on('buddy', function(jid, state, statusText) {
-            var rosterMap = $rootScope.rosterMap;
+        function parseChatStateStanza (from, state) {
+            var rosterMap = $rootScope.rosterMap,
+                jid = from.split('/')[0];
 
             // user may or may not already exist
             if (!rosterMap[jid]) {
@@ -81,10 +89,40 @@ angular.module('ChatApp', ['directives.user'])
                 };
             }
 
-            // extend new info on to it
-             _.extend(rosterMap[jid], {
-                state: state,
-                statusText: statusText
+            if (state.indexOf('cha:') === 0) {
+                state = state.substr(4);
+            };
+            rosterMap[jid].chatState = state;
+        };
+
+        // http://xmpp.org/extensions/xep-0085.html
+        xmpp.on('chatstate', function (from, state) {
+            $rootScope.$apply(function () {
+                parseChatStateStanza(from, state);
+            });
+        });
+
+        xmpp.on('close', function() {
+            window.alert("connection closed~");
+        });
+
+        // presence changes
+        xmpp.on('buddy', function(jid, state, statusText) {
+            $rootScope.$apply(function () {
+                var rosterMap = $rootScope.rosterMap;
+
+                // user may or may not already exist
+                if (!rosterMap[jid]) {
+                    rosterMap[jid] = {
+                        jid: jid
+                    };
+                }
+
+                // extend new info on to it
+                 _.extend(rosterMap[jid], {
+                    state: state,
+                    statusText: statusText
+                 });
              });
         });
 
@@ -115,14 +153,22 @@ angular.module('ChatApp', ['directives.user'])
                 // a user can be in multiple groups
                 // organize them into a map
                 var groups = item.getChildren('group');
-                groups.forEach(function (group) {
-                    var groupName = group.getText();
-                    if (groupMap[groupName]) {
-                        groupMap[groupName].push(rosterMap[jid]);
+                if (groups.length) {
+                    groups.forEach(function (group) {
+                        var groupName = group.getText();
+                        if (groupMap[groupName]) {
+                            groupMap[groupName].push(rosterMap[jid]);
+                        } else {
+                            groupMap[groupName] = [rosterMap[jid]];
+                        }
+                    });
+                } else {
+                    if (groupMap['No Group']) {
+                        groupMap['No Group'].push(rosterMap[jid]);
                     } else {
-                        groupMap[groupName] = [rosterMap[jid]];
+                        groupMap['No Group'] = [rosterMap[jid]];
                     }
-                });
+                }
             });
 
             // tnow put the groups into an array

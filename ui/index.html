@@ -15,33 +15,34 @@
                     global.gui.Window.get().showDevTools()
                 }
             });
+
+            window.addEventListener("offline", function(e) {alert("offline");})
+            window.addEventListener("online", function(e) {alert("online");})
         </script>
 
     </head>
     <body>
-        <div class="main-container" ng-controller="RosterController">
-            <div class="roster-container">
-                <div class="group">
+        <div class="main-container" >
+            <div class="roster-container" ng-controller="RosterController">
+                <div class="threads group">
                     <div class="group-header">Threads</div>
-                    <div ng-repeat="thread in threadMap">
+                    <div class="thread"  ng-repeat="thread in threadMap">
                         <div user="thread.user" ng-click="userClicked(thread.user)"></div>
+                        <span class="close-thread glyphicon glyphicon-remove" ng-click="closeThread(thread)"></span>
                     </div>
                 </div>
                 <div class="group" ng-repeat="group in groups | orderBy:'name'">
-                    <div class="group-header">{{group.name}}</div>
-                    <div user="user" ng-click="userClicked(user)" ng-hide="user.state=='offline'" ng-repeat="user in group.users | orderBy:'name'"></div>
+                    <div ng-click="collapsed=!collapsed;" class="group-header">{{group.name}} <span class="group-toggle caret"></span></div>
+                    <div ng-hide="collapsed" class="user-list">
+                        <div user="user" ng-click="userClicked(user)" ng-hide="user.state=='offline'" ng-repeat="user in group.users | orderBy:['-state','name']"></div>
+                    </div>
                 </div>
             </div>
             <div class="messages-container" ng-controller="MessagesController">
                 <div ng-show="selectedThread">
                     <div class="chat-header">
-                        <div class="user {{selectedThread.user.state}}">
-                            <span class="state-icon" title="{{selectedThread.user.state}}"></span>
-                            <span class="name">{{selectedThread.user.name || selectedThread.user.jid}}</span>
-                            <span class="status-text">
-                                {{selectedThread.user.statusText}}
-                            </span>
-                        </div>
+                        <div class="pull-left" user="selectedThread.user"></div>
+                        <div class="pull-right">{{selectedThread.user.chatState}}</div>
                     </div>
                     <div class="messages-list">
                         <div class="chat-message" ng-repeat="message in selectedThread.messages">
