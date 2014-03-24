@@ -51,8 +51,7 @@ html, body {
 
 .roster-container .thread .close-thread {
     position: absolute;
-    top: 50%;
-    margin-top: -16px;
+    top: -1px;
     left: 1px;
     color: transparent;
     cursor: pointer;
