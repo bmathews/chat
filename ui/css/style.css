@@ -9,7 +9,7 @@
 html, body {
     height: 100%;
     font-size: 12px;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', 'Helvetica', 'Arial';
 }
 
 .roster-container, .messages-container {

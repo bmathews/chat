@@ -34,40 +34,44 @@ angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.k
         };
 
         xmpp.on('online', function() {
-            $rootScope.online = true;
-            console.log('Connected');
+            $rootScope.$apply(function () {
+                $rootScope.online = true;
+                console.log('Connected');
+            });
         });
 
         xmpp.on('chat', function(jid, text) {
-            var threadMap = $rootScope.threadMap;
+            $rootScope.$apply(function () {
+                var threadMap = $rootScope.threadMap;
 
-            // make a msg object
-            var message = {
-                from: $rootScope.rosterMap[jid],
-                timestamp: new Date(),
-                text: text
-            };
-
-            // if we don't already have a thread, make one
-            if (!threadMap[jid]) {
-                threadMap[jid] = {
-                    user: $rootScope.rosterMap[jid],
-                    messages: [message]
+                // make a msg object
+                var message = {
+                    from: $rootScope.rosterMap[jid],
+                    timestamp: new Date(),
+                    text: text
                 };
-            } else {
-                // add to existing thread
-                threadMap[jid].messages.push(message);
-            }
 
-            // auto-open thread if there isn't one open
-            if (!$rootScope.selectedThread) {
-                $rootScope.selectedThread = threadMap[jid];
-            } else if ($rootScope.selectedThread !== threadMap[jid]) {
-                // add to unread count if not the current thread
-                threadMap[jid].unreadCount = (threadMap[jid].unreadCount || 0) + 1;
-            }
+                // if we don't already have a thread, make one
+                if (!threadMap[jid]) {
+                    threadMap[jid] = {
+                        user: $rootScope.rosterMap[jid],
+                        messages: [message]
+                    };
+                } else {
+                    // add to existing thread
+                    threadMap[jid].messages.push(message);
+                }
 
-            console.log(jid, message);
+                // auto-open thread if there isn't one open
+                if (!$rootScope.selectedThread) {
+                    $rootScope.selectedThread = threadMap[jid];
+                } else if ($rootScope.selectedThread !== threadMap[jid]) {
+                    // add to unread count if not the current thread
+                    threadMap[jid].unreadCount = (threadMap[jid].unreadCount || 0) + 1;
+                }
+
+                console.log(jid, message);
+            });
         });
 
         xmpp.on('error', function(err) {
