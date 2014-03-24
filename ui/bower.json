@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "dependencies": {
     "bootstrap": "*",
-    "angular": "1.0.8",
-    "angular-bootstrap": "~0.4.0",
-    "angular-ui": "~0.4.0",
-    "angular-grid": "~2.0.6",
     "jquery": "*",
-    "angularjs-scroll-glue": "~0.0.1"
+    "angularjs-scroll-glue": "~0.0.1",
+    "angular": "~1.2.15",
+    "angular-ui": "~0.4.0",
+    "angular-emoji": "https://github.com/blackxored/angular-emoji-filter.git",
+    "angular-ui-utils": "bower-keypress"
   }
 }

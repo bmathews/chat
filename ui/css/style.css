@@ -149,15 +149,19 @@ html, body {
 
 .messages-container .chat-header {
     padding: 10px;
-    background: #0072c6;
-    border-bottom: 2px solid #0161a8;
-    display: inline-block;
+    background: #fafafa;
+    border-bottom: 1px solid #ddd;
+   display: inline-block;
     width: 100%;
 }
 
 .messages-container .messages-list {
     padding: 10px;
     overflow: auto;
+}
+
+.messages-container .chat-message.self {
+    float: right;
 }
 
 .messages-container .chat-message {
@@ -167,7 +171,9 @@ html, body {
     float: left;
     clear: both;
     box-shadow: 0px 1px 2px rgba(0,0,0,.2);
+    max-width: 80%;
 }
+
 
 .messages-container .chat-message-text {
     margin-bottom: 5px;
@@ -195,6 +201,27 @@ html, body {
 }
 
 .messages-list {
-    -webkit-flex: 1 1 100%;
-            flex: 1 1 100%;   
+    flex: 1;
+    position: relative;
+    background: #eee;
+}
+.messages-list .typing {
+    opacity: .5;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.composition-bar {
+    border-top: 1px solid #ddd;
+    background: #fafafa;
+}
+
+.composition-bar .message-input {
+    font-size: 12px;
+    resize: none;
+    box-shadow: none;
+    border-radius: 2px;
+}
+.composition-bar .message-input-wrapper {
+    padding: 10px;
 }

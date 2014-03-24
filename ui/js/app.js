@@ -1,6 +1,6 @@
 'use strict';
-angular.module('ChatApp', ['directives.user', 'luegg.directives'])
-    .run(['$rootScope', function ($rootScope) {
+angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.keypress'])
+    .run(['$rootScope','$sce', function ($rootScope, $sce) {
 
         var xmpp = require('simple-xmpp'),
             _ = require('lodash');
@@ -25,6 +25,14 @@ angular.module('ChatApp', ['directives.user', 'luegg.directives'])
             }
         };
 
+        $rootScope.send = function (jid, message) {
+            xmpp.send(jid, message);
+            $rootScope.threadMap[jid].messages.push({
+                timestamp: new Date(),
+                text: $sce.trustAsHtml(message)
+            });
+        };
+
         xmpp.on('online', function() {
             $rootScope.online = true;
             console.log('Connected');
@@ -35,8 +43,9 @@ angular.module('ChatApp', ['directives.user', 'luegg.directives'])
 
             // make a msg object
             var message = {
+                from: $rootScope.rosterMap[jid],
                 timestamp: new Date(),
-                text: text
+                text: $sce.trustAsHtml(text)
             };
 
             // if we don't already have a thread, make one

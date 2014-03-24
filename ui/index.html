@@ -4,6 +4,7 @@
         <title>Chat</title>
 
         <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+        <link href="css/emoji.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
 
         <script>
@@ -20,16 +21,25 @@
             window.addEventListener("online", function(e) {alert("online");})
         </script>
 
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-ui/build/angular-ui.js"></script>
+        <script src="bower_components/angular-ui-utils/keypress.min.js"></script>
+        <script src="bower_components/angularjs-scroll-glue/src/scrollglue.js"></script>
+        <script src="js/filters/emoji.js"></script>
+        <script src="js/directives/user.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/rosterController.js"></script>
+        <script src="js/messagesController.js"></script>
     </head>
     <body>
-        <div class="main-container" >
+        <div ng-show="online" class="main-container" >
             <div class="roster-container" ng-controller="RosterController">
                 <div class="threads group">
                     <div class="group-header">Conversations</div>
-                    <div class="thread"  ng-repeat="thread in threadMap">
-                        <div user="thread.user" ng-click="userClicked(thread.user)"></div>
+                    <div ng-click="userClicked(thread.user)" class="thread"  ng-repeat="thread in threadMap">
+                        <div user="thread.user"></div>
                         <span class="close-thread glyphicon glyphicon-remove" ng-click="closeThread(thread)"></span>
-                        <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-left: 31px; color: #666;">{{thread.messages[thread.messages.length-1].text.substr(0, 100)}}</div>
+                        <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-left: 31px; color: #666;">{{thread.messages[thread.messages.length-1].text.valueOf().substr(0, 100)}}</div>
                     </div>
                 </div>
                 <div class="group" ng-repeat="group in groups | orderBy:'name'">
@@ -42,31 +52,25 @@
             <div class="messages-container" ng-controller="MessagesController">
                 <div class="selected-thread" ng-show="selectedThread">
                     <div class="chat-header">
-                        <div class="pull-left" user="selectedThread.user"></div>
-                        <div class="pull-right">{{selectedThread.user.chatState}}</div>
+                        <div user="selectedThread.user"></div>
                     </div>
                     <div scroll-glue class="messages-list">
-                        <div class="chat-message" ng-repeat="message in selectedThread.messages">
-                            <div class="chat-message-text">{{message.text}}</div>
+                        <div ng-class="{'self': !message.from}" class="chat-message" ng-repeat="message in selectedThread.messages">
+                            <div class="chat-message-text" ng-bind-html="message.text | emoji"></div>
                             <div class="chat-message-timestamp">{{message.timestamp | date:'shortTime'}}</div>
+                        </div>
+                        <div class="chat-message typing" ng-show="selectedThread.user.chatState=='composing'">
+                            <div class="chat-message-text">...</div>
                         </div>
                     </div>
                     <div class="composition-bar">
-                        <div class="input-field">
-                            <textarea rows="1" class="form-control"></textarea>
+                        <div class="message-input-wrapper">
+                            <textarea ng-model="text" ui-keypress="{13:'onEnterPressed($event, selectedThread.user.jid, text)'}" rows="1" class="form-control message-input"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <script src="bower_components/angular/angular.min.js"></script>
-        <script src="bower_components/angular-ui/build/angular-ui.js"></script>
-        <script src="bower_components/angularjs-scroll-glue/src/scrollglue.js"></script>
-        <script src="js/directives/user.js"></script>
-        <script src="js/app.js"></script>
-        <script src="js/rosterController.js"></script>
-        <script src="js/messagesController.js"></script>
-
+        <div ng-hide="online">Loading...</div>
     </body>
 </html>
