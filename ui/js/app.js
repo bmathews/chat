@@ -1,6 +1,6 @@
 'use strict';
-angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.keypress'])
-    .run(['$rootScope','$sce', function ($rootScope, $sce) {
+angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.keypress', 'ngSanitize'])
+    .run(['$rootScope','$sce', '$sanitize', function ($rootScope, $sce, $sanitize) {
 
         var xmpp = require('simple-xmpp'),
             _ = require('lodash');
@@ -29,7 +29,7 @@ angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.k
             xmpp.send(jid, message);
             $rootScope.threadMap[jid].messages.push({
                 timestamp: new Date(),
-                text: $sce.trustAsHtml(message)
+                text: message
             });
         };
 
@@ -45,7 +45,7 @@ angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.k
             var message = {
                 from: $rootScope.rosterMap[jid],
                 timestamp: new Date(),
-                text: $sce.trustAsHtml(text)
+                text: text
             };
 
             // if we don't already have a thread, make one
@@ -57,6 +57,14 @@ angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.k
             } else {
                 // add to existing thread
                 threadMap[jid].messages.push(message);
+            }
+
+            // auto-open thread if there isn't one open
+            if (!$rootScope.selectedThread) {
+                $rootScope.selectedThread = threadMap[jid];
+            } else if ($rootScope.selectedThread !== threadMap[jid]) {
+                // add to unread count if not the current thread
+                threadMap[jid].unreadCount = (threadMap[jid].unreadCount || 0) + 1;
             }
 
             console.log(jid, message);

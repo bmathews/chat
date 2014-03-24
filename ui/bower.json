@@ -8,6 +8,7 @@
     "angular": "~1.2.15",
     "angular-ui": "~0.4.0",
     "angular-emoji": "https://github.com/blackxored/angular-emoji-filter.git",
-    "angular-ui-utils": "bower-keypress"
+    "angular-ui-utils": "bower-keypress",
+    "angular-sanitize": "~1.2.15"
   }
 }

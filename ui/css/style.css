@@ -23,6 +23,31 @@ html, body {
     margin-top: 10px;
 }
 
+.roster-container .roster-list {
+    flex: 1;
+    overflow: auto;
+}
+
+.roster-container .roster-search {
+    position: relative;
+    background: rgba(0,0,0,.1);
+    border-top: 4px solid #33393d;
+}
+.roster-container .roster-search input {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding-left: 31px;
+}
+
+.roster-container .roster-search .glyphicon {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #666;
+    pointer-events: none;
+}
+
 .roster-container .group-header {
     font-weight: 700;
     color: #666;
@@ -35,6 +60,14 @@ html, body {
 
 .roster-container .thread {
     position: relative;
+    cursor: pointer;
+}
+
+.roster-container .unread-count {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: rgb(51, 116, 187);
 }
 
 .roster-container .thread:hover .user .state-icon {
@@ -74,12 +107,20 @@ html, body {
     top: 7px;
 }
 
+.roster-container .group-header.collapsed .group-toggle {
+    border-top: 0 dotted #000000;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid #666;
+    border-left: 4px solid transparent;
+}
+
 .roster-container {
-    -webkit-flex: 1 1 40%;
-            flex: 1 6 40%;
-    -webkit-order: 1;
-            order: 1;
+    width: 225px;
     background: #33393d;
+    display: -webkit-flex;
+display:         flex;
+-webkit-flex-flow: column;
+        flex-flow: column;
 }
 
 .roster-container .user {
@@ -123,9 +164,11 @@ html, body {
     border-color: rgb(36,156,78);
 }
 
-.user.away .state-icon,
-.user.offline .state-icon {
+.user.away .state-icon {
     border-color: #ccc;
+}
+.user.offline .state-icon {
+    border-color: #444;
 }
 
 .user.xa .state-icon {
@@ -176,7 +219,7 @@ html, body {
 
 .messages-container .chat-message-text {
     margin-bottom: 5px;
-    white-space: pre;
+    white-space: pre-line;
 }
 
 .messages-container .chat-message-timestamp {

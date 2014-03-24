@@ -25,6 +25,7 @@
         <script src="bower_components/angular-ui/build/angular-ui.js"></script>
         <script src="bower_components/angular-ui-utils/keypress.min.js"></script>
         <script src="bower_components/angularjs-scroll-glue/src/scrollglue.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="js/filters/emoji.js"></script>
         <script src="js/directives/user.js"></script>
         <script src="js/app.js"></script>
@@ -34,20 +35,24 @@
     <body>
         <div ng-show="online" class="main-container" >
             <div class="roster-container" ng-controller="RosterController">
-                <div class="threads group">
-                    <div class="group-header">Conversations</div>
-                    <div ng-click="userClicked(thread.user)" class="thread"  ng-repeat="thread in threadMap">
-                        <div user="thread.user"></div>
-                        <span class="close-thread glyphicon glyphicon-remove" ng-click="closeThread(thread)"></span>
-                        <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-left: 31px; color: #666;">{{thread.messages[thread.messages.length-1].text.valueOf().substr(0, 100)}}</div>
+                <div class="roster-list">
+                    <div class="threads group">
+                        <div class="group-header">Conversations</div>
+                        <div ng-click="userClicked(thread.user)" class="thread"  ng-repeat="thread in threadMap | filter:{'user.name': nameFilter} ">
+                            <div user="thread.user"></div>
+                            <span class="close-thread glyphicon glyphicon-remove" ng-click="closeThread(thread)"></span>
+                            <span ng-show="thread.unreadCount" class="badge unread-count">{{thread.unreadCount}}</span>
+                            <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-left: 31px; margin-top: -5px; color: #666;">{{thread.messages[thread.messages.length-1].text.valueOf().substr(0, 100)}}</div>
+                        </div>
+                    </div>
+                    <div ng-show="showGroup(group)" class="group" ng-repeat="group in groups | orderBy:'name'">
+                        <div ng-class="{'collapsed': collapsed}" ng-click="collapsed=!collapsed;" class="group-header">{{group.name}} <span class="group-toggle caret"></span></div>
+                        <div ng-hide="collapsed" class="user-list">
+                            <div user="user" ng-click="userClicked(user)" ng-hide="user.state=='offline'" ng-repeat="user in group.users | filter:{'name': nameFilter} | orderBy:['-state','name']"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="group" ng-repeat="group in groups | orderBy:'name'">
-                    <div ng-click="collapsed=!collapsed;" class="group-header">{{group.name}} <span class="group-toggle caret"></span></div>
-                    <div ng-hide="collapsed" class="user-list">
-                        <div user="user" ng-click="userClicked(user)" ng-hide="user.state=='offline'" ng-repeat="user in group.users | orderBy:['-state','name']"></div>
-                    </div>
-                </div>
+                <div class="roster-search"><i class="glyphicon glyphicon-search"></i><input class="form-control " ng-model="nameFilter"/></div>
             </div>
             <div class="messages-container" ng-controller="MessagesController">
                 <div class="selected-thread" ng-show="selectedThread">
@@ -56,7 +61,7 @@
                     </div>
                     <div scroll-glue class="messages-list">
                         <div ng-class="{'self': !message.from}" class="chat-message" ng-repeat="message in selectedThread.messages">
-                            <div class="chat-message-text" ng-bind-html="message.text | emoji"></div>
+                            <div class="chat-message-text" ng-bind-html="message.text | emoji | linky"></div>
                             <div class="chat-message-timestamp">{{message.timestamp | date:'shortTime'}}</div>
                         </div>
                         <div class="chat-message typing" ng-show="selectedThread.user.chatState=='composing'">
@@ -65,7 +70,7 @@
                     </div>
                     <div class="composition-bar">
                         <div class="message-input-wrapper">
-                            <textarea ng-model="text" ui-keypress="{13:'onEnterPressed($event, selectedThread.user.jid, text)'}" rows="1" class="form-control message-input"></textarea>
+                            <textarea autofucus ng-model="text" ui-keypress="{13:'onEnterPressed($event, selectedThread.user.jid, text)'}" rows="1" class="form-control message-input"></textarea>
                         </div>
                     </div>
                 </div>

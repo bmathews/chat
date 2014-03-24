@@ -167,9 +167,9 @@
         ],
         rEmojis = new RegExp(":(" + emojis.join("|") + "):", "g");
 
-    angular.module("emoji", []).filter("emoji", ['$sce', function ($sce) {
+    angular.module("emoji", []).filter("emoji", ['$sce', '$sanitize', function ($sce, $sanitize) {
         return function (input) {
-            return $sce.trustAsHtml(input.valueOf().replace(rEmojis, function (match, text) {
+            return $sanitize(input.replace(rEmojis, function (match, text) {
                 return "<i class='emoji emoji_" + text + "'>" + text + "</i>";
             }));
         };
