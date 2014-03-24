@@ -177,6 +177,7 @@ html, body {
 
 .messages-container .chat-message-text {
     margin-bottom: 5px;
+    white-space: pre;
 }
 
 .messages-container .chat-message-timestamp {
