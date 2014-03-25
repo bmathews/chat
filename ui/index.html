@@ -59,7 +59,7 @@
                     <div class="chat-header">
                         <div user="selectedThread.user"></div>
                     </div>
-                    <div scroll-glue class="messages-list">
+                    <div scroll-glue ng-click="handleClick($event);"class="messages-list">
                         <div ng-class="{'self': !message.from}" class="chat-message" ng-repeat="message in selectedThread.messages">
                             <div class="chat-message-text" ng-bind-html="message.text | linky | emoji"></div>
                             <div class="chat-message-timestamp">{{message.timestamp | date:'shortTime'}}</div>

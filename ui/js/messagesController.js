@@ -9,5 +9,22 @@ angular.module('ChatApp')
                 $rootScope.send(from, text)
             }
         }       
+
+        $scope.handleClick = function (event) {
+            var href;
+            var isExternal = false;
+            var element = event.target;
+
+            if (element.nodeName.toLowerCase() === 'a') {
+                href = element.getAttribute('href');
+            }
+
+            isExternal = href.match(/^(((ftp|https?):\/\/)|mailto:)/gi);
+            
+            if (href && isExternal) {
+                global.gui.Shell.openExternal(href);
+                event.preventDefault();
+            }
+        };
     }
 ]);
