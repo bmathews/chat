@@ -40,7 +40,10 @@ angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.k
             });
         });
 
+        var chatSound = new Audio('css/pop.wav');
+
         xmpp.on('chat', function(jid, text) {
+            chatSound.play();
             $rootScope.$apply(function () {
                 var threadMap = $rootScope.threadMap;
 
@@ -68,7 +71,10 @@ angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.k
                 } else if ($rootScope.selectedThread !== threadMap[jid]) {
                     // add to unread count if not the current thread
                     threadMap[jid].unreadCount = (threadMap[jid].unreadCount || 0) + 1;
+                    global.gui.Window.get().setBadgeLabel(threadMap[jid].unreadCount);
                 }
+
+                global.gui.Window.get().requestAttention();
 
                 console.log(jid, message);
             });
