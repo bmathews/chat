@@ -11,9 +11,14 @@
             global.gui = require('nw.gui');
 
             // load debugger on ctrl+shift+j
+            // reload app    on ctrl+shift+r
             document.addEventListener('keypress', function (e) {
-                if (e.shiftKey && e.ctrlKey && e.keyCode === 10) {
-                    global.gui.Window.get().showDevTools()
+                if (e.shiftKey && e.ctrlKey) {
+                    if (e.keyCode === 10) {
+                        global.gui.Window.get().showDevTools()
+                    } else if (e.keyCode === 18) {
+                        global.gui.Window.get().reloadDev()
+                    }
                 }
             });
 
