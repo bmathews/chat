@@ -2,7 +2,9 @@
 
 angular.module('ChatApp')
     .controller('MessagesController', ['$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
-        $scope.onEnterPressed = function (event, from, text) {
+
+        // send msg on enter (but not shift+enter)
+        $scope.handleEnterPressed = function (event, from, text) {
             if (!event.shiftKey) {
                 $scope.text = "";
                 event.preventDefault();
@@ -10,20 +12,17 @@ angular.module('ChatApp')
             }
         }       
 
-        $scope.handleClick = function (event) {
+        // open ftp://, http://, https://, and mailto: hrefs outside of node-webkit
+        $scope.handleMessageClick = function (event) {
             var href;
-            var isExternal = false;
-            var element = event.target;
-
-            if (element.nodeName.toLowerCase() === 'a') {
-                href = element.getAttribute('href');
-            }
-
-            isExternal = href.match(/^(((ftp|https?):\/\/)|mailto:)/gi);
-            
-            if (href && isExternal) {
-                global.gui.Shell.openExternal(href);
-                event.preventDefault();
+            if (event.target.nodeName.toLowerCase() === 'a') {
+                href = event.target.getAttribute('href');
+                if (href && href.match) { 
+                    if(href.match(/^(((ftp|https?):\/\/)|mailto:)/gi)) {
+                        global.gui.Shell.openExternal(href);
+                        event.preventDefault();
+                    }
+                }
             }
         };
     }
