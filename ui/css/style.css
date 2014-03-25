@@ -220,6 +220,7 @@ display:         flex;
 .messages-container .chat-message-text {
     margin-bottom: 5px;
     white-space: pre-line;
+    word-break: break-word;
 }
 
 .messages-container .chat-message-timestamp {
