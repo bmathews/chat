@@ -1,5 +1,5 @@
 'use strict';
-angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.keypress', 'ngSanitize'])
+angular.module('ChatApp', ['directives.user', 'luegg.directives', 'emoji', 'ui.keypress', 'ngSanitize', 'xeditable'])
     .run(['$rootScope','$sce', '$sanitize', function ($rootScope, $sce, $sanitize) {
 
         var xmpp = require('simple-xmpp'),

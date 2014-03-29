@@ -4,6 +4,7 @@
         <title>Chat</title>
 
         <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+        <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
         <link href="css/emoji.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
 
@@ -31,6 +32,7 @@
         <script src="bower_components/angular-ui-utils/keypress.min.js"></script>
         <script src="bower_components/angularjs-scroll-glue/src/scrollglue.js"></script>
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
         <script src="js/filters/emoji.js"></script>
         <script src="js/directives/user.js"></script>
         <script src="js/app.js"></script>
@@ -81,6 +83,10 @@
                 </div>
             </div>
         </div>
-        <div ng-hide="online">Loading...</div>
+        <ul ng-if="!online" class="loader">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
     </body>
 </html>

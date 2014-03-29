@@ -11,5 +11,12 @@
   "dependencies": {
     "simple-xmpp": "0.1.19",
     "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-sass": "^0.12.0",
+    "grunt-cli": "^0.1.13",
+    "time-grunt": "^0.3.1",
+    "load-grunt-tasks": "^0.4.0"
   }
 }
