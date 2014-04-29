@@ -4,11 +4,11 @@ angular.module('ChatApp')
     .controller('MessagesController', ['$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
 
         // send msg on enter (but not shift+enter)
-        $scope.handleEnterPressed = function (event, from, text) {
+        $scope.handleEnterPressed = function (event, to, text) {
             if (!event.shiftKey) {
                 $scope.text = "";
                 event.preventDefault();
-                $rootScope.send(from, text)
+                $rootScope.send(to, text)
             }
         }       
 

@@ -40,7 +40,7 @@
         <script src="js/messagesController.js"></script>
     </head>
     <body>
-        <div ng-show="online" class="main-container" >
+        <div ng-if="online" class="main-container" >
             <div class="roster-container" ng-controller="RosterController">
                 <div class="roster-list">
                     <div class="threads group">
@@ -52,7 +52,7 @@
                             <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-left: 31px; margin-top: -5px; color: #666;">{{thread.messages[thread.messages.length-1].text.valueOf().substr(0, 100)}}</div>
                         </div>
                     </div>
-                    <div ng-show="showGroup(group)" class="group" ng-repeat="group in groups | orderBy:'name'">
+                    <div ng-show="showGroup(group)" class="group" ng-repeat="group in roster.groups | orderBy:'name'">
                         <div ng-class="{'collapsed': collapsed}" ng-click="collapsed=!collapsed;" class="group-header">{{group.name}} <span class="group-toggle caret"></span></div>
                         <div ng-hide="collapsed" class="user-list">
                             <div user="user" ng-click="userClicked(user)" ng-hide="user.state=='offline'" ng-repeat="user in group.users | filter:{'name': nameFilter} | orderBy:['-state','name']"></div>
@@ -68,7 +68,7 @@
                     </div>
                     <div scroll-glue class="messages-list">
                         <div ng-class="{'self': !message.from}" class="chat-message" ng-repeat="message in selectedThread.messages">
-                            <div ng-click="handleMessageClick($event);" class="chat-message-text" ng-bind-html="message.text | linky | emoji"></div>
+                            <div ng-click="handleMessageClick($event);" class="chat-message-text" ng-bind-html="message.text | linky"></div>
                             <div class="chat-message-timestamp">{{message.timestamp | date:'shortTime'}}</div>
                         </div>
                         <div class="chat-message typing" ng-show="selectedThread.user.chatState=='composing'">
