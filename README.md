@@ -12,24 +12,20 @@ Runs on windows/linux/osx. Major WIP.
 
 
 ### Install
-* Download [node-webkit v0.8.*](https://github.com/rogerwang/node-webkit)
-* Download [nw-gyp](https://github.com/rogerwang/nw-gyp)
+* Download/install [node-webkit v0.8.*](https://github.com/rogerwang/node-webkit)
 
 ```
 $ git clone https://github.com/moonsspoon/chat.git
 $ cd chat
 $ npm install
 $ npm install -g bower grunt-cli
+$ grunt
 $ cd ui
 $ bower install
-$ cd ..
-$ grunt build
 ```
+Then [run with node-webkit](https://github.com/rogerwang/node-webkit/wiki/How-to-run-apps). 
 
-Rebuild native dependencies with nw-gyp (replace * with your node-webkit version)
-```
-$ nw-gyp rebuild --target=0.8.*
-```
+
 
 ### License
 MIT
